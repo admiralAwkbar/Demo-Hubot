@@ -1,0 +1,23 @@
+{
+
+"os_env_2":
+{
+"OS_AUTH_URL": "url_1",
+"OS_TENANT_ID": "tenant_id_1",
+"OS_TENANT_NAME": "tenant_name_1",
+"OS_USERNAME" : "username_1",
+"OS_PASSWORD" : "password_1",
+"OS_REGION_NAME" : "region_1"
+},
+
+"os_env_1":
+{
+"OS_AUTH_URL": "url_2",
+"OS_TENANT_ID": "tenant_id_2",
+"OS_TENANT_NAME": "tenant_name_2",
+"OS_USERNAME" : "username_2",
+"OS_PASSWORD" : "password_2",
+"OS_REGION_NAME" : "region_2"
+}
+
+}

@@ -1,0 +1,20 @@
+#!/bin/bash
+if [ $# -ne 2 ]
+then 
+  echo "This file is used for decrypt hubot server file"
+  echo "usage: decryptEnv [encryptedFilePath] [outputDecryptedFilePath]"
+  exit
+fi
+if [ -f "$1" ] 
+  then
+    echo "Decrypting $1 and storing it in $2"
+    gpg -o $2 --passphrase-fd 0 --batch --yes -d $1 </home/rick/pass
+    if [ $? == 0 ]
+      then
+        echo "decryption successful"
+    else
+      echo "decryption failed"
+    fi
+else
+  echo "file $1"
+fi

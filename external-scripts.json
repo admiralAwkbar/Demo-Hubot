@@ -1,0 +1,10 @@
+[
+  "hubot-diagnostics",
+  "hubot-help",
+  "hubot-pugme",
+  "hubot-maps",
+  "hubot-redis-brain",
+  "hubot-rules",
+  "hubot-github-webhook-listener",
+  "hubot-shipit"
+]

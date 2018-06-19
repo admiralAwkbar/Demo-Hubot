@@ -1,0 +1,29 @@
+{
+  "name": "hubot",
+  "version": "0.0.0",
+  "private": true,
+  "author": "admiralAwkbar@github.com",
+  "description": "A simple helpful robot for your Company",
+  "dependencies": {
+    "hubot-maps": "0.0.2",
+    "hubot-shipit": "~0.2.0",
+    "hubot-help": "~0.1.1",
+    "hubot-diagnostics": "0.0.1",
+    "hubot-pugme": "~0.1.0",
+    "hubot-rules": "~0.1.0",
+    "hubot-redis-brain": "0.0.2",
+    "hubot-scripts": "~2.5.16",
+    "hubot": ">= 2.0.0",
+    "hubot-slack": ">= 0.0.1",
+    "request": ">= 2.55.0",
+    "async": "~1.4.2",
+    "redis": "~0.12.1",
+    "plotly": "~1.0.2",
+    "underscore": "*",
+    "https-proxy-agent": "~1.0.0",
+    "debug": "2.2.0"
+  },
+  "engines": {
+    "node": "0.10.x"
+  }
+}
