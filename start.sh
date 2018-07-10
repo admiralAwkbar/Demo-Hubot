@@ -93,6 +93,8 @@ tail -n 40 ${HUBOT_LOGS_DIR}/${HUBOT_NAME}.log
 echo -n "$ME's hubot active pid: "
 pgrep -U $ME node
 
+echo "Script completed with status:[$?]
+exit $?
 ################################################################################
 ####################### Script Has Completed ###################################
 ################################################################################
