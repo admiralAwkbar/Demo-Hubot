@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 #######################################
 # Script to start Hubot in background #
 #                                     #
@@ -94,11 +94,15 @@ tail -n 40 ${HUBOT_LOGS_DIR}/${HUBOT_NAME}.log
 #############################
 # Getting current hubot pid #
 #############################
-echo -n "$ME's hubot active pid: "
-pgrep -U $ME node
+PID=$(pgrep -U $ME node)
 
-echo "Script completed with status:[$?]"
-exit $?
+if [ -z $PID ]; then
+  echo "Error! no pid!"
+  exit 1
+else
+  echo "Script completed with pid:[$PID]"
+  exit 0
+fi
 ################################################################################
 ####################### Script Has Completed ###################################
 ################################################################################
