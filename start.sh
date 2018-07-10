@@ -82,7 +82,8 @@ sudo chown -R $ME:$ME $HUBOT_HOME_DIR/.git
 # Start the application #
 #########################
 echo "starting the application"
-${HUBOT_BIN} --name ${HUBOT_NAME} --adapter ${ADAPTER} >${HUBOT_LOGS_DIR}/${HUBOT_NAME}.log 2>&1 &
+echo "Running command:[${HUBOT_BIN} --name ${HUBOT_NAME} --adapter ${ADAPTER} > ${HUBOT_LOGS_DIR}/${HUBOT_NAME}.log 2>&1 &]"
+${HUBOT_BIN} --name ${HUBOT_NAME} --adapter ${ADAPTER} > ${HUBOT_LOGS_DIR}/${HUBOT_NAME}.log 2>&1 &
 
 #######################################
 # Need small sleep to let it start up #
