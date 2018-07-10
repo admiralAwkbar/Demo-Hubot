@@ -9,6 +9,7 @@ HUBOT_HOME_DIR=/opt/hubot
 HUBOT_BIN=$HUBOT_HOME_DIR/bin/hubot
 HUBOT_LOGS_DIR=$HUBOT_HOME_DIR/logs
 ERROR_FILE=/opt/hubot/failError
+SLEEP_TIME=10
 
 # Make sure the error flag is cleaned up
 if [ -f $ERROR_FILE ]
@@ -51,11 +52,8 @@ echo "starting the application"
 ${HUBOT_BIN} --name ${HUBOT_NAME} --adapter ${ADAPTER} >${HUBOT_LOGS_DIR}/${HUBOT_NAME}.log 2>&1 &
 
 # Need small sleep to let it start up
-echo "sleeping a few seconds before log tail..."
-sleep 7
+echo "sleeping for $SLEEP_TIME seconds before log tail..."
+sleep $SLEEP_TIME
 tail -n 40 ${HUBOT_LOGS_DIR}/${HUBOT_NAME}.log
 echo -n "$ME's hubot active pid: "
 pgrep -U $ME node
-
-echo "copying the new log to tmp for a look"
-cp ${HUBOT_LOGS_DIR}/${HUBOT_NAME}.log /tmp
