@@ -36,6 +36,8 @@ if [ "$ME" = "root" ]; then
    echo "This script should not be ran as root"
    echo "Please run as a Hubot account"
    exit 1
+else
+   echo "Script is ran by Hubot account:[$ME]"
 fi
 
 ###############
