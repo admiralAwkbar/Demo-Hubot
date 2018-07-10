@@ -13,6 +13,7 @@
     "hubot-rules": "~0.1.0",
     "hubot-redis-brain": "0.0.2",
     "hubot-scripts": "~2.5.16",
+    "hubot-github-webhook-listener": ">= 0.0.1",
     "hubot": ">= 2.0.0",
     "hubot-slack": ">= 0.0.1",
     "request": ">= 2.55.0",
