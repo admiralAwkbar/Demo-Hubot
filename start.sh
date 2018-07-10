@@ -90,6 +90,10 @@ ${HUBOT_BIN} --name ${HUBOT_NAME} --adapter ${ADAPTER} >${HUBOT_LOGS_DIR}/${HUBO
 echo "sleeping for $SLEEP_TIME seconds before log tail..."
 sleep $SLEEP_TIME
 tail -n 40 ${HUBOT_LOGS_DIR}/${HUBOT_NAME}.log
+sleep $SLEEP_TIME
+#############################
+# Getting current hubot pid #
+#############################
 echo -n "$ME's hubot active pid: "
 pgrep -U $ME node
 
