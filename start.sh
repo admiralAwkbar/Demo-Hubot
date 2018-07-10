@@ -81,29 +81,29 @@ sudo chown -R $ME:$ME $HUBOT_HOME_DIR/.git
 #########################
 # Start the application #
 #########################
-echo "starting the application"
-echo "Running command:[${HUBOT_BIN} --name ${HUBOT_NAME} --adapter ${ADAPTER} 2>&1 > ${HUBOT_LOGS_DIR}/${HUBOT_NAME}.log &]"
-${HUBOT_BIN} --name ${HUBOT_NAME} --adapter ${ADAPTER} 2>&1 > ${HUBOT_LOGS_DIR}/${HUBOT_NAME}.log &
+#echo "starting the application"
+#echo "Running command:[${HUBOT_BIN} --name ${HUBOT_NAME} --adapter ${ADAPTER} 2>&1 > ${HUBOT_LOGS_DIR}/${HUBOT_NAME}.log &]"
+#${HUBOT_BIN} --name ${HUBOT_NAME} --adapter ${ADAPTER} 2>&1 > ${HUBOT_LOGS_DIR}/${HUBOT_NAME}.log &
 
 #######################################
 # Need small sleep to let it start up #
 #######################################
-echo "sleeping for $SLEEP_TIME seconds before log tail..."
-sleep $SLEEP_TIME
-tail -n 40 ${HUBOT_LOGS_DIR}/${HUBOT_NAME}.log
+#echo "sleeping for $SLEEP_TIME seconds before log tail..."
+#sleep $SLEEP_TIME
+#tail -n 40 ${HUBOT_LOGS_DIR}/${HUBOT_NAME}.log
 
 #############################
 # Getting current hubot pid #
 #############################
-PID=$(pgrep -U $ME node)
+#PID=$(pgrep -U $ME node)
 
-if [ -z $PID ]; then
-  echo "Error! no pid!"
-  exit 1
-else
-  echo "Script completed with pid:[$PID]"
-  exit 0
-fi
+#if [ -z $PID ]; then
+#  echo "Error! no pid!"
+#  exit 1
+#else
+#  echo "Script completed with pid:[$PID]"
+#  exit 0
+#fi
 ################################################################################
 ####################### Script Has Completed ###################################
 ################################################################################
