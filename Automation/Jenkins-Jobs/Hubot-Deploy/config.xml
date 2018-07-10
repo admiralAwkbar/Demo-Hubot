@@ -9,7 +9,7 @@
       <configVersion>2</configVersion>
       <userRemoteConfigs>
         <hudson.plugins.git.UserRemoteConfig>
-          <url>https://github.com/LukasPersonal/Hubot-Basic.git</url>
+          <url>https://github.com/admiralAwkbar/Demo-Hubot.git</url>
           <credentialsId>awkbar-api</credentialsId>
         </hudson.plugins.git.UserRemoteConfig>
       </userRemoteConfigs>

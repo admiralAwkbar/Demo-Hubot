@@ -5,10 +5,10 @@
 
 # Setting Vars
 ME=`whoami`
-HUBOT_HOME_DIR=/opt/$ME
+HUBOT_HOME_DIR=/opt/hubot
 HUBOT_BIN=$HUBOT_HOME_DIR/bin/hubot
 HUBOT_LOGS_DIR=$HUBOT_HOME_DIR/logs
-ERROR_FILE=/opt/$ME/failError
+ERROR_FILE=/opt/hubot/failError
 
 # Make sure the error flag is cleaned up
 if [ -f $ERROR_FILE ]

@@ -77,7 +77,7 @@ sub ValidateInput
     if (length($githubToken) < 1)
     {
       # Failed to get key from env, need to pull it
-      my $command = "grep GITHUB_TOKEN /opt/mona/hubot.env 2>&1";
+      my $command = "grep GITHUB_TOKEN /opt/hubot/hubot.env 2>&1";
       my $result = `$command`;
 
       if ($?!=0)

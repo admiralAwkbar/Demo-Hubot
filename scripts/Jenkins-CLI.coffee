@@ -1,5 +1,5 @@
 # Description:
-#   Interact with your Jenkins CI server 
+#   Interact with your Jenkins CI server
 #
 # Dependencies:
 #   None
@@ -149,7 +149,7 @@ module.exports = (robot) ->
 
         if not job.lastBuild
           return
-  ############ END OF LOOP ###########################       
+  ############ END OF LOOP ###########################
   ####################################################
 
 

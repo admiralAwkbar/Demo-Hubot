@@ -14,8 +14,7 @@ $|=1;
 ##################
 #### GLOBALS: ####
 ##################
-my $hubotName = $ARGV[0];        # Status of the preflight checks
-my $rulesFile = "/opt/$hubotName/coffeelint.json"; # Rules for coffeelint
+my $rulesFile = "/opt/hubot/coffeelint.json"; # Rules for coffeelint
 my $buildDir = undef;     # Current build directory
 my $foundErrorCoffee = 0; # Flag for error found
 my $foundErrorPython = 0; # Flag for error found
@@ -39,7 +38,7 @@ Footer();         # Basic footer prints
 sub Header
 {
   	print "-------------------------------------------------------------------\n";
-  	print "This step will lint the Hubot instance:\[$hubotName\]\n";
+  	print "This step will lint the Hubot instance\n";
    print "-------------------------------------------------------------------\n";
 }
 #######################################################################
@@ -52,17 +51,17 @@ sub Footer
    {
       $state = 1;
    }
-   
+
    if($foundErrorPython == 1)
    {
       $state = 1;
    }
-   
+
    if($foundErrorPerl == 1)
    {
       $state = 1;
    }
-   
+
    print "-------------------------------------------------------------------\n";
    print "Step has completed with exit code: $state\n";
    exit($state);
@@ -123,7 +122,7 @@ sub CoffeeLinter
                print "ERROR: $result\n";
             }
          }
-      } 
+      }
    }
    else
    {
@@ -158,7 +157,7 @@ sub PythonLinter
                print "ERROR: $result\n";
             }
          }
-      } 
+      }
    }
    else
    {
@@ -193,7 +192,7 @@ sub PerlLinter
                print "ERROR: $result\n";
             }
          }
-      } 
+      }
    }
    else
    {
@@ -210,6 +209,6 @@ sub DebugErrors
     print "#### END TRANSMISSION ####\n";
     print "###### EXITING NOW #######\n";
     print "##########################\n";
-    
+
     exit(1);
 }

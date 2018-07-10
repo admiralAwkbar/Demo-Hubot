@@ -10,7 +10,7 @@
 #   HUBOT_JENKINS_AUTH
 #
 # Author
-# LukasG
+# @admiralAwkbar
 
 request = require 'request'
 
@@ -50,7 +50,7 @@ lastJob = (job, cb) =>
   httpGet path, (err, result) =>
     return cb err if err?
     cb null, result
-    
+
 #####################
 # Build Jenkins Job #
 #####################
@@ -66,7 +66,7 @@ buildJob = (job, parameters, cb) =>
   httpPost path, data, (err, result) =>
     return cb err, result if err?
     cb null, result
-    
+
 ##########################
 # Build Jenkins Json Job #
 ##########################

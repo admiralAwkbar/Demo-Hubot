@@ -22,7 +22,6 @@ $|=1;
 ############
 # GLOBALS: #
 ############
-my $hubotName = "mona";             # Name of the hubot
 my $user = undef;                   # Jenkins User
 my $token = undef;                  # Jenkins User Token
 my $jenkinsUrl = undef;             # jenkins Url
@@ -61,7 +60,7 @@ sub GetCreds
    ###################################
    # Get the HUBOT_JENKINS_SHORT_URL #
    ###################################
-   my $urlCommand = "grep HUBOT_JENKINS_SHORT_URL /opt/$hubotName/hubot.env 2>&1";
+   my $urlCommand = "grep HUBOT_JENKINS_SHORT_URL /opt/hubot/hubot.env 2>&1";
    my $urlResult = `$urlCommand`;
 
    if ($?==0)
@@ -80,7 +79,7 @@ sub GetCreds
    ###################################
    # Get the HUBOT_JENKINS_AUTH_USER #
    ###################################
-   my $userCommand = "grep HUBOT_JENKINS_AUTH_USER /opt/$hubotName/hubot.env 2>&1";
+   my $userCommand = "grep HUBOT_JENKINS_AUTH_USER /opt/hubot/hubot.env 2>&1";
    my $userResult = `$userCommand`;
 
    if ($?==0)
@@ -99,7 +98,7 @@ sub GetCreds
    #####################################
    # Get the HUBOT_JENKINS_AUTH_PASSWD #
    #####################################
-   my $passwdCommand = "grep HUBOT_JENKINS_AUTH_PASSWD /opt/$hubotName/hubot.env 2>&1";
+   my $passwdCommand = "grep HUBOT_JENKINS_AUTH_PASSWD /opt/hubot/hubot.env 2>&1";
    my $passwdResult = `$passwdCommand`;
 
    if ($?==0)
@@ -138,7 +137,7 @@ sub GetQueueJson
         print "Failed to get JSON DATA";
         exit(1);
     }
-    
+
     chomp($result);
     #print "Result:\[$result\]\n";
 
@@ -177,7 +176,7 @@ sub ParseQueueData
     #print "Grabbing all watched repos...\n";
     # Need to itterate through the list to get all repos
     my @items = @{ $data->{'items'} };
-    foreach my $single (@items) 
+    foreach my $single (@items)
     {
         # Push the repo name into var
         my $id = $single->{"id"};
