@@ -9,7 +9,7 @@
 ################
 # Setting Vars #
 ################
-ME=`whoami`                            # Account running script
+ME=$(whoami)                           # Account running script
 HUBOT_HOME_DIR=/opt/hubot              # Home directory for the Hubot
 HUBOT_BIN=$HUBOT_HOME_DIR/bin/hubot    # Location of bin file
 HUBOT_LOGS_DIR=$HUBOT_HOME_DIR/logs    # Directory to store logs
@@ -19,6 +19,12 @@ SLEEP_TIME=10                          # time to sleep to allow to startup
 ################################################################################
 ############################### MAIN ###########################################
 ################################################################################
+
+######################
+# Print the location #
+######################
+LOCATION=$(pwd)
+echo "Current Working Directory:[$LOCATION]"
 
 ##########################################
 # Make sure the error flag is cleaned up #
