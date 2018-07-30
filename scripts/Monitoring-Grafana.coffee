@@ -33,6 +33,7 @@ request = require 'request'
 async   = require 'async'
 
 local_web_server = require './utilities/localwebserver'
+uploadToSlack = require './utilities/uploadToSlack'
 
 # Various configuration options stored in environment variables
 grafana_host = process.env.HUBOT_GRAFANA_HOST
@@ -256,10 +257,10 @@ uploadToLocalServer = (robot, msg, title, link, content, length, content_type) -
     if err
       robot.logger.error "Upload Error: ", err
       return msg.send "#{title} - [Upload Error] - #{link}"
-    uploadToFlowdock.uploadToFlowdock robot, filename, flowRoom, (err,res) ->
+    uploadToSlack.uploadToSlack robot, filename, flowRoom, (err,res) ->
       if err?
-        robot.logger.error "Failed upload to flowdock: ", err
-        return msg.send "Failed upload to flowdock: #{err.message}"
+        robot.logger.error "Failed upload to Slack: ", err
+        return msg.send "Failed upload to Slack: #{err.message}"
 
       if res?
         robot.logger.info "upload success: ", res
