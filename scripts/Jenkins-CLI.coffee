@@ -1,5 +1,5 @@
 # Description:
-#   Interact with your Jenkins CI server
+#   Interact with your Jenkins CI server 
 #
 # Dependencies:
 #   None
@@ -19,12 +19,13 @@
 #   hubot jenkins job queue - Returns the size of the jenkins queue
 #
 # Author:
-#   LucasG
+#   AdmiralAwkbar
 
 ###########
 # Globals #
 ###########
 url = process.env.HUBOT_JENKINS_URL
+port = process.env.HUBOT_JENKINS_PORT
 
 ############################
 # Pointing to utils script #
@@ -41,29 +42,31 @@ module.exports = (robot) ->
       remainder = msg.match[3].replace /^\s+|\s+$/g, ""
     robot.logger.info "Build job #{jobName}"
 
+    # set up args
+    args = []
     parameters = null
     if remainder?
       parameters = remainder
+      args.push(jobName + ',' + parameters)
+    else
+      args.push(jobName)
 
+    # Start the job
     msg.send "Generating Jenkins job for #{jobName}..."
-    request "#{url}/job/#{jobName}/api/json", (error, res1, body) ->
-      nextJobNum=1
-      if res1.statusCode==200
-        data=JSON.parse(body)
-        jobNumber=data.lastBuild.number
-        nextJobNum=(parseInt(jobNumber)+1)
-
-      jenkin.buildJob jobName, parameters, (err, job,res) =>
-        if 200 <= err.status < 400 # Or, not an error code.
-          response =  "Jenkins Build started for #{jobName}\nURL: #{url}/job/#{jobName}/#{nextJobNum}/console"
-        else if 404 == err.status
-          response = response + "Build not found, double check that it exists and is spelt correctly."
-        else
-          response = response + " Jenkins says: Status #{err.status} #{err.body}"
-        setTimeout( ()->
-          response.trim()
-          msg.send response,
-        10000)
+    args = []
+    args.push(jobName + ',' + parameters)
+    # instantiate child process to be able to create a subprocess
+    {spawn} = require 'child_process'
+    # create new subprocess and have it run the script
+    cmd = spawn 'scripts/utilities/py_utils/Launch-Jenkins-Job.py', args
+    # catch stdout and output into hubot's log
+    cmd.stdout.on 'data', (data) ->
+      msg.send "```\n#{data.toString()}\n```"
+      console.log data.toString().trim()
+    # catch stderr and output into hubot's log
+    cmd.stderr.on 'data', (data) ->
+      console.log data.toString().trim()
+      msg.send "```\n#{data.toString()}\n```"
 
   ############ END OF LOOP ###########################
   ####################################################
@@ -149,7 +152,7 @@ module.exports = (robot) ->
 
         if not job.lastBuild
           return
-  ############ END OF LOOP ###########################
+  ############ END OF LOOP ###########################       
   ####################################################
 
 
@@ -184,7 +187,7 @@ module.exports = (robot) ->
     # instantiate child process to be able to create a subprocess
     {spawn} = require 'child_process'
     # create new subprocess and have it run the script
-    cmd = spawn '/opt/hubot/scripts/utilities/perl/get_jenkins_job_queue.pl'
+    cmd = spawn 'scripts/utilities/perl/get_jenkins_job_queue.pl'
     # catch stdout and output into hubot's log
     cmd.stdout.on 'data', (data) ->
       msg.send "```\n#{data.toString()}\n```"

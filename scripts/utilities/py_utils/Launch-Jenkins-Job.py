@@ -30,6 +30,7 @@ user = os.environ.get('HUBOT_JENKINS_AUTH_USER')    # User to connect to Jenkins
 key = os.environ.get('HUBOT_JENKINS_AUTH_PASSWD')   # API key to connect with
 jenkinsUrl = os.environ.get('HUBOT_JENKINS_SHORT_URL')    # jenkins url
 token = os.environ.get('HUBOT_JENKINS_SECRET')      # Special key
+port = os.environ.get('HUBOT_JENKINS_PORT')      # Jenkins Port
 
 ##########################################################
 ################### SUB ROUTINES BELOW ###################
@@ -42,9 +43,9 @@ def StartJob():
     url = ""
     
     if (parameters == "NONE"):
-        url = "http://%s:%s@%s/job/%s/build?token=%s" % (user,key,jenkinsUrl,jenkinsJob,token)
+        url = "http://%s:%s@%s:%s/job/%s/build?token=%s" % (user,key,jenkinsUrl,port,jenkinsJob,token)
     else:
-        url = "http://%s:%s@%s/job/%s/buildWithParameters?%s&token=%s" % (user,key,jenkinsUrl,jenkinsJob,parameters,token)
+        url = "http://%s:%s@%s:%s/job/%s/buildWithParameters?%s&token=%s" % (user,key,jenkinsUrl,port,jenkinsJob,parameters,token)
 
     # Print url for debug
     #print "Url:[%s]" %(url)
@@ -120,7 +121,7 @@ def GetJobId(location):
     location = var2
 
     # Need to call jenkins with the queued location to get back job
-    url = "http://%s:%s@%s/queue/item/%s/api/json" % (user,key,jenkinsUrl,location)
+    url = "http://%s:%s@%s:%s/queue/item/%s/api/json" % (user,key,jenkinsUrl,port,location)
 
     # Build the header
     headers = {"Content-Type": "application/json"}
@@ -130,7 +131,7 @@ def GetJobId(location):
 
     # check the response back from Jenkins
     if (response.status_code != 200):
-        genericLink = "%s/job/%s" % (jenkinsUrl,jenkinsJob)
+        genericLink = "%s:%s/job/%s" % (jenkinsUrl,port,jenkinsJob)
         print "Failed to get specific Jenkins job Url!"
         print "Generic Link:"
         print "%s" % (genericLink)
@@ -147,7 +148,7 @@ def GetJobId(location):
         triggerJobUrl = response['executable']['url']
         #print "New Url:[%s]" % (triggerJobUrl)
     except:
-        genericLink = "%s/job/%s" % (jenkinsUrl,jenkinsJob)
+        genericLink = "%s:%s/job/%s" % (jenkinsUrl,port,jenkinsJob)
         print "Failed to get specific jenkinsJob job Url!"
         print "Generic Link:"
         print "%s" % (genericLink)
