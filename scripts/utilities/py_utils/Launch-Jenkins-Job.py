@@ -42,7 +42,7 @@ def StartJob():
     # Build the master Url
     url = ""
     
-    if (parameters == "NONE"):
+    if (parameters == "NONE" or parameters =="null"):
         url = "http://%s:%s@%s:%s/job/%s/build?token=%s" % (user,key,jenkinsUrl,port,jenkinsJob,token)
     else:
         url = "http://%s:%s@%s:%s/job/%s/buildWithParameters?%s&token=%s" % (user,key,jenkinsUrl,port,jenkinsJob,parameters,token)
