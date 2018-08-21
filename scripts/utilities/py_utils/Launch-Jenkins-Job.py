@@ -82,8 +82,14 @@ def StartJob():
     # Removing http:// to shorten the length
     cleanedUrl = triggerJobUrl[7:]
 
-    # Print the goods
-    print "http://%s" % (cleanedUrl)
+    # Need to see if its the consul url and update
+    if ("jenkins.service.consul" in cleanedUrl):
+        jenkinsIpUrl = subprocess.check_output("getent hosts jenkins.service.consul |awk '{ print $1 }'", shell=True)
+        cleanJenkins = jenkinsIpUrl.strip()
+        print "http://" + cleanedUrl.replace("jenkins.service.consul", cleanJenkins)
+    else:
+        # Print the goods
+        print "http://%s" % (cleanedUrl)
 
 ##########################################################
 #### SUB ROUTINE AllowQueue ##############################
