@@ -17,7 +17,7 @@ node("hubot")
 	
 	// Globals
 	def payload                     // GitHub Payload, loaded later
-	def botname="mona"           // Name of the hubot
+	def botname="dankbot"           // Name of the hubot
 	def gitFlowInfo                 // The flow informatgion
    def preflightStatus='success'   // Will be changed to failure if the build step fails
    def branch = env.Branch
@@ -25,15 +25,12 @@ node("hubot")
 	// Clone it down
 	withCredentials([[
 		$class: 'UsernamePasswordMultiBinding', 
-		credentialsId: 'awkbar-api',
+		credentialsId: 'github-cred',
 		usernameVariable: 'USERNAME', 
 		passwordVariable: 'PASSWORD']]) 
 		{
-
-			//sh 'echo uname=$USERNAME pwd=$PASSWORD'
-
 			// Clone the repo 
-			git url: "https://$PASSWORD@github.com/github/Services-Demo-Hubot", branch: "${branch}"
+			git url: "https://$PASSWORD@github.service.consul/demo/Demo-Hubot", branch: "${branch}"
 		}
 
   	
