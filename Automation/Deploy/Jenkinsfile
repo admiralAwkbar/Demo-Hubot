@@ -22,11 +22,11 @@ node("hubot")
 	// Globals
 	def payload
 	def masterJobNumber
-	def botname="mona"
+	def botname="dankbot"
 	def gitFlowInfo
 
 	// Clone the repo
-	git url: "https://github.com/admiralAwkbar/Demo-Hubot"
+	git url: "https://github.service.consul/demo/Demo-Hubot"
 
 
 	/***************************************************************************************************
