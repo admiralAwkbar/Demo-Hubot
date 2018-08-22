@@ -24,14 +24,14 @@ node("hubot")
 	
 	// Clone it down
 	withCredentials([[
-		$class: 'UsernamePasswordMultiBinding', 
-		credentialsId: 'github-cred',
-		usernameVariable: 'USERNAME', 
-		passwordVariable: 'PASSWORD']]) 
-		{
-			// Clone the repo 
-			git url: "https://$PASSWORD@github.service.consul/demo/Demo-Hubot", branch: "${branch}"
-		}
+	$class: 'UsernamePasswordMultiBinding', 
+	credentialsId: 'github-cred',
+	usernameVariable: 'USERNAME', 
+	passwordVariable: 'PASSWORD']]) 	
+	{
+		// Clone the repo 
+		git url: "https://$PASSWORD@github.service.consul/demo/Demo-Hubot", branch: "${branch}"
+	}
 
   	
 	/***************************************************************************************************
