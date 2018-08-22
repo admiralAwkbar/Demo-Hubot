@@ -26,7 +26,13 @@ node("hubot")
 	def gitFlowInfo
 
 	// Clone the repo
-	git url: "https://github.service.consul/demo/Demo-Hubot"
+	//git url: "https://github.service.consul/demo/Demo-Hubot"
+	//git url: "https://$PASSWORD@github.com/github/Services-Demo-Hubot", branch: "${branch}"
+	git (
+		url: "https://github.com/github/Services-Demo-Hubot", 
+		credentialsID: 'github-cred',
+		branch: "${branch}"
+	)
 
 
 	/***************************************************************************************************
