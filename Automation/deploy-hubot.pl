@@ -80,6 +80,8 @@ sub CheckInput
         print "ERROR! Need the botname as an argument to this script\n";
         exit 1;
     }
+    my $user = `whoami`;
+    print "Running as:\[$user\]\n";
 }
 #######################################################################
 #### SUB ROUTINE SetPerms #############################################
@@ -143,8 +145,8 @@ sub RunDeploy
 
 
     # Need to change hubot to the bots name
-    print "Setting Hubot Name to:\[$botName\]\n";
-    my $hubotNameCommand = "sed -i \'s/BOTNAMEVALUE/$botName/g\' $personalDeployFileFullPath 2>&1";
+    print "Setting Hubot Name to:\[hubot\]\n";
+    my $hubotNameCommand = "sed -i \'s/BOTNAMEVALUE/hubot/g\' $personalDeployFileFullPath 2>&1";
     my @results = `$hubotNameCommand`;
     if (@results)
     {
