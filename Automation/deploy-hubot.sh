@@ -29,6 +29,13 @@ echo ""
 echo "----------------------------------------------------------------"
 echo "Setting up tools and paths"
 
+##########################
+# Copy hubot.env to side #
+##########################
+echo "----------------------------------------------------------------"
+echo "Setting aside hubot.env"
+mv /opt/hubot/hubot.env /tmp/hubot.env.hold
+
 ###################
 # Reset to origin #
 ###################
@@ -120,8 +127,8 @@ sudo su - $BOTNAME -c "chmod -R 755 /opt/hubot/scripts/*"
 # Need to pull in hubot.env from S3 #
 #####################################
 echo "----------------------------------------------------------------"
-echo "Pulling hubot.env from s3 encrypted and protected storage"
-aws s3 cp s3://services-demo-artifacts/Hubot/hubot.env /opt/hubot/hubot.env
+echo "Pulling hubot.env back from holding"
+mv /tmp/hubot.env.hold /opt/hubot/hubot.env
 
 ###############################
 # Need to chown and lock file #
