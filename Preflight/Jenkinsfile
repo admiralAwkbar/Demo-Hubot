@@ -71,7 +71,15 @@ node("hubot")
     	try
     	{
 			// backup the instance
-    		sh "perl Automation/updateGitHubStatus.pl ${preflightStatus}"
+		withCredentials([[
+	$class: 'UsernamePasswordMultiBinding', 
+	credentialsId: 'github-cred',
+	usernameVariable: 'USERNAME', 
+	passwordVariable: 'PASSWORD']]) 	
+	{
+		// Clone the repo 
+		sh "perl Automation/updateGitHubStatus.pl ${preflightStatus} $PASSWORD"
+	}
       }
       catch(all)
       {
