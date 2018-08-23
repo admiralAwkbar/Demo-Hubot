@@ -15,18 +15,18 @@ $|=1;
 #### GLOBALS: ####
 ##################
 my $preflightStatus = $ARGV[0];        # Status of the preflight checks
-my $githubToken = $ARGV[1];      # API Read Token
+my $githubToken = $ARGV[1];            # API Read Token
 my $orgRepo = $ENV{'OrgRepo'};         # Org/Repo/Branch
 my ($org,$repo)=split(/\//,$orgRepo);  # Split out the variables
 my $branch = $ENV{'Branch'};           # Org/Repo/Branch
 my $targetUrl = $ENV{'BUILD_URL'};     # Url to build job
-my $gitHubUrl = "https://github.service.consul/api/v3";  # GHE Url
+my $gitHubUrl = undef;                 # Url to GitHub
 my $sha = $ENV{'SHA'};                 # SHA sum for the branch
 my $state = undef;                     # State to return to GHE
 my $exitCode = undef;                  # Code to exit with
 my $description = undef;               # Description of the build
 my $context = "Hubot Preflight";       # Context of the build
-my $statusUrlBase = "$gitHubUrl/repos/$org/$repo/statuses";# Url for Status
+my $statusUrlBase = undef;             # Url for Status
 
 ###############
 #### MAIN: ####
@@ -91,6 +91,49 @@ sub ValidateInput
          my ($var1,$var2)=split(" ",$result,2);
          my ($trash1,$token,$trash2)=split("'",$var2,3);
          $githubToken = $token;
+      }
+    }
+
+    ###################
+    # Get the GHE Url #
+    ###################
+    my $command = "getent hosts github.service.consul | awk \'{ print \$1 }\' 2>&1";
+    my $result = `$command`;
+
+    # Make sure we have a valid result
+    if ($?!=0)
+    {
+      print "ERROR! Failed to resolve Github URL!\n";
+      exit(1);
+    }
+    else
+    {
+      chomp($result); # clean whitespace
+      $gitHubUrl = "https://$result/api/v3";  # GHE Url
+      $statusUrlBase = "$gitHubUrl/repos/$org/$repo/statuses";# Url for Status
+    }
+
+    #######################
+    # Fix the Jenkins Url #
+    #######################
+    # TargetUrl example: http://jenkins.service.consul:8080/job/Hubot-Preflight/4/
+    if ($targetUrl =~ "jenkins.service.consul")
+    {
+      # Need to get the real Jenkins URL
+      my $getJenkinsCommand = "getent hosts jenkins.service.consul | awk \'{ print \$1 }\' 2>&1";
+      my $jenkinsResult = `$getJenkinsCommand`;
+
+      # Make sure we have a valid result
+      if ($?!=0)
+      {
+        print "ERROR! Failed to resolve Github URL!\n";
+        exit(1);
+      }
+      else
+      {
+        chomp($jenkinsResult); # clean whitespace
+        my ($var1,$var2,$var3,$var4,$var5,$var6)=split(/\//,$targetUrl,6);
+        $targetUrl = "http://$jenkinsResult:8080/job/$var5/$var6";
       }
     }
 }
