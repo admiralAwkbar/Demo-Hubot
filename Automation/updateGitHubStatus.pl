@@ -129,8 +129,8 @@ sub ReportStatus
         #print "DEBUG --- Status URL:\[$statusUrl\]\n";
 
         # Need to end api call to GHE for Success or failure
-        my $command = "curl -s -X POST -H \'Authorization: token $githubToken\' -H \'Accept: application/vnd.github.v3+json\' -d \'{\"state\":\"$state\", \"target_url\":\"$targetUrl\", \"description\":\"$description\", \"context\":\"$context\"}\' $statusUrl 2>&1";
-        my $cleanCommand = "curl -s -X POST -H \'Authorization: token XXXXXXXX\' -H \'Accept: application/vnd.github.v3+json\' -d \'{\"state\":\"$state\", \"target_url\":\"$targetUrl\", \"description\":\"$description\", \"context\":\"$context\"}\' $statusUrl 2>&1";
+        my $command = "curl -s -k -X POST -H \'Authorization: token $githubToken\' -H \'Accept: application/vnd.github.v3+json\' -d \'{\"state\":\"$state\", \"target_url\":\"$targetUrl\", \"description\":\"$description\", \"context\":\"$context\"}\' $statusUrl 2>&1";
+        my $cleanCommand = "curl -s -k -X POST -H \'Authorization: token XXXXXXXX\' -H \'Accept: application/vnd.github.v3+json\' -d \'{\"state\":\"$state\", \"target_url\":\"$targetUrl\", \"description\":\"$description\", \"context\":\"$context\"}\' $statusUrl 2>&1";
 
         print "Sending curl to GHE:\[$cleanCommand\]\n";
         my @results = `$command`;
