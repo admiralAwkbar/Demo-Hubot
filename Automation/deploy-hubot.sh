@@ -96,12 +96,12 @@ sed -i 's/X-Github-Delivery/x-github-delivery/' $WEBHOOK_PATH | tr '[:upper:]' '
 #########################
 # Fix hubot diagnostics #
 #########################
-echo "----------------------------------------------------------------"
-echo "Fixing hubot-diagnostics"
-DIAG_PATH="$DIR/node_modules/hubot-diagnostics/src/diagnostics.coffee"
-HOLD_DIAG_PATH="$DIR/node_modules/hubot-diagnostics/src/diagnostics.coffee.hold"
-echo "Adding .hold to not parse file"
-mv $DIAG_PATH $HOLD_DIAG_PATH
+#echo "----------------------------------------------------------------"
+#echo "Fixing hubot-diagnostics"
+#DIAG_PATH="$DIR/node_modules/hubot-diagnostics/src/diagnostics.coffee"
+#HOLD_DIAG_PATH="$DIR/node_modules/hubot-diagnostics/src/diagnostics.coffee.hold"
+#echo "Adding .hold to not parse file"
+#mv $DIAG_PATH $HOLD_DIAG_PATH
 
 #######################
 # Removed after moving to AWS
