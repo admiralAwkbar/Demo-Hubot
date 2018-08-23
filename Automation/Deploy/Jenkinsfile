@@ -27,7 +27,7 @@ node("hubot")
 
 	withCredentials([[
 		$class: 'UsernamePasswordMultiBinding', 
-		credentialsId: 'ghe-cred',
+		credentialsId: 'github-cred',
 		usernameVariable: 'USERNAME', 
 		passwordVariable: 'PASSWORD']]) 
 		{
