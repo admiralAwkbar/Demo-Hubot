@@ -15,6 +15,7 @@ $|=1;
 #### GLOBALS: ####
 ##################
 my $preflightStatus = $ARGV[0];        # Status of the preflight checks
+my $githubToken = $ARGV[1];      # API Read Token
 my $orgRepo = $ENV{'OrgRepo'};         # Org/Repo/Branch
 my ($org,$repo)=split(/\//,$orgRepo);  # Split out the variables
 my $branch = $ENV{'Branch'};           # Org/Repo/Branch
@@ -25,7 +26,6 @@ my $state = undef;                     # State to return to GHE
 my $exitCode = undef;                  # Code to exit with
 my $description = undef;               # Description of the build
 my $context = "Hubot Preflight";       # Context of the build
-my $githubToken = $ENV{'GITHUB_TOKEN'};      # API Read Token
 my $statusUrlBase = "$gitHubUrl/repos/$org/$repo/statuses";# Url for Status
 
 ###############
