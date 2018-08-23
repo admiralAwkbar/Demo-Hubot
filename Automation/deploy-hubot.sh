@@ -51,7 +51,7 @@ sudo su - $BOTNAME -c "cd $DIR; git clean -x -f -d "
 echo "----------------------------------------------------------------"
 echo "Git Pulling latest changes"
 echo ""
-sudo su - $BOTNAME -c "cd $DIR; git pull origin $BRANCH"
+sudo su - $BOTNAME -c "cd $DIR; sudo git pull origin $BRANCH"
 
 ###############
 # npm install #
