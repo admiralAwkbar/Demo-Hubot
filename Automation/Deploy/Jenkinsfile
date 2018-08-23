@@ -88,22 +88,22 @@ node("hubot")
 	* Validate Hubot Stage
 	****************************************************************************************************
 	***************************************************************************************************/
-  	stage("ValidateHubot")
-  	{
-		sh "echo '#########################################'"
-	   sh "echo 'Validate Hubot: ${botname}'"
-		sh "echo '#########################################'"
-
-	   try
-	   {
-			// validate the bot
-	   	sh "perl Automation/Hubot-Validate-Rebuild.pl ${botname}"
-	   }
-	   catch(all)
-	   {
-			echo "ERROR encountered during Validate Alive"
-	   }
-  	}
+  	// stage("ValidateHubot")
+  	// {
+		// sh "echo '#########################################'"
+	  //  sh "echo 'Validate Hubot: ${botname}'"
+		// sh "echo '#########################################'"
+    // 
+	  //  try
+	  //  {
+		// 	// validate the bot
+	  //  	sh "perl Automation/Hubot-Validate-Rebuild.pl ${botname}"
+	  //  }
+	  //  catch(all)
+	  //  {
+		// 	echo "ERROR encountered during Validate Alive"
+	  //  }
+  	// }
 
 	/***************************************************************************************************
 	****************************************************************************************************
