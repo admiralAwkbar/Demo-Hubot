@@ -9,7 +9,7 @@
 # BOTNAME is updated beforehand in perl script #
 ################################################
 CUR_USER=$(whoami)
-BOTNAME=BOTNAMEVALUE
+BOTNAME=hubot
 DIR=/opt/hubot
 BRANCH=master
 
