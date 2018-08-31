@@ -13,7 +13,7 @@
 #   "underscore": "*"
 #
 # Author:
-#  Lucas.gravley@ge.com
+#  admiralAwkbar
 #
 
 _ = require('underscore')
