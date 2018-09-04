@@ -169,7 +169,7 @@ fi
 #####################
 echo "----------------------------------------------------------------"
 echo "Running Git Garbage Collection"
-sudo su - root -c "cd $DIR; sudo git gc"
+sudo su - $BOTNAME -c "cd $DIR; sudo git gc"
 
 ################################
 # Make sure bot owns all files #
