@@ -223,7 +223,7 @@ sub CreateBackup
 		print "Backup file was successfully created in the system\n";
 		print "Setting The file perms to 777 and owner to:\[$account:$account\]\n";
 
-		my $command = "cd $backupDir ; sudo chmod 777 $backupFileName ; sudo chown $account:$account $backupFileName 2>&1";
+		my $command = "cd $backupDir ; sudo chmod 777 $backupFileName ; sudo chown hubot:hubot $backupFileName 2>&1";
 		my @results = `$command`;
 		if (@results)
 		{
