@@ -128,7 +128,7 @@ sudo su - $BOTNAME -c "chmod -R 755 /opt/hubot/scripts/*"
 #####################################
 echo "----------------------------------------------------------------"
 echo "Pulling hubot.env back from holding"
-mv /tmp/hubot.env.hold /opt/hubot/hubot.env
+sudo su - $BOTNAME -c "mv /tmp/hubot.env.hold /opt/hubot/hubot.env"
 
 ###############################
 # Need to chown and lock file #
