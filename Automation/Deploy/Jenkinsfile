@@ -16,100 +16,76 @@
 ///////////////////////////////////// START OF PIPELINE ////////////////////////////////////////////
 node("hubot")
 {
-	//clean the workspace
-   cleanWs()
+  //clean the workspace
+  cleanWs()
 
-	// Globals
-	def payload
-	def masterJobNumber
-	def botname="dankbot"
-	def gitFlowInfo
+  // Globals
+  def payload
+  def masterJobNumber
+  def botname="dankbot"
+  def gitFlowInfo
 
-	withCredentials([[
-		$class: 'UsernamePasswordMultiBinding', 
-		credentialsId: 'github-cred',
-		usernameVariable: 'USERNAME', 
-		passwordVariable: 'PASSWORD']]) 
-		{
+  withCredentials([[
+    $class: 'UsernamePasswordMultiBinding', 
+    credentialsId: 'github-cred',
+    usernameVariable: 'USERNAME', 
+    passwordVariable: 'PASSWORD']]) 
+    {
+      //sh 'echo uname=$USERNAME pwd=$PASSWORD'
 
-			//sh 'echo uname=$USERNAME pwd=$PASSWORD'
-
-			// Clone the repo 
-			git url: "https://$PASSWORD@github.service.consul/demo/Demo-Hubot", branch: "master"
-		}
-
-
-	/***************************************************************************************************
-	****************************************************************************************************
-	* Backup Hubot Stage
-	****************************************************************************************************
-	***************************************************************************************************/
-  	stage("BackupHubot")
-  	{
-		sh "echo '#########################################'"
-	   sh "echo 'Backup of Hubot: ${botname}'"
-		sh "echo '#########################################'"
-
-      try
-	   {
-         // backup the instance
-	    	sh "perl Automation/Hubot-Backup.pl ${botname}"
-	   }
-	   catch(all)
-	   {
-			echo "ERROR encountered during backup"
-	   }
-  	}
-
-	/***************************************************************************************************
-	****************************************************************************************************
-	* Build Hubot Stage
-	****************************************************************************************************
-	***************************************************************************************************/
-  	stage("BuildHubot")
-  	{
-		sh "echo '#########################################'"
-	   sh "echo 'Building Hubot: ${botname}'"
-		sh "echo '#########################################'"
-
-      try
-	   {
-			// deploy the hubot
-	    	sh "perl Automation/deploy-hubot.pl ${botname}"
-	   }
-	   catch(all)
-	   {
-			echo "ERROR encountered during deployment "
-	   }
-  	}
-
-	/***************************************************************************************************
-	****************************************************************************************************
-	* Validate Hubot Stage
-	****************************************************************************************************
-	***************************************************************************************************/
-  	// stage("ValidateHubot")
-  	// {
-		// sh "echo '#########################################'"
-	  //  sh "echo 'Validate Hubot: ${botname}'"
-		// sh "echo '#########################################'"
-    // 
-	  //  try
-	  //  {
-		// 	// validate the bot
-	  //  	sh "perl Automation/Hubot-Validate-Rebuild.pl ${botname}"
-	  //  }
-	  //  catch(all)
-	  //  {
-		// 	echo "ERROR encountered during Validate Alive"
-	  //  }
-  	// }
-
-	/***************************************************************************************************
-	****************************************************************************************************
-	* END OF LOOP
-	****************************************************************************************************
-	***************************************************************************************************/
+      // Clone the repo 
+      git url: "https://$PASSWORD@github.service.consul/demo/Demo-Hubot", branch: "master"
+    }
+    
+  /***************************************************************************************************
+  ****************************************************************************************************
+  * Backup Hubot Stage
+  ****************************************************************************************************
+  ***************************************************************************************************/
+  stage("BackupHubot")
+  {
+    sh "echo '#########################################'"
+    sh "echo 'Backup of Hubot: ${botname}'"
+    sh "echo '#########################################'"
+    
+    try
+    {
+      // backup the instance
+      sh "perl Automation/Hubot-Backup.pl ${botname}"
+    }
+    catch(all)
+    {
+      echo "ERROR encountered during backup"
+    }
+  }
+  
+  /***************************************************************************************************
+  ****************************************************************************************************
+  * Build Hubot Stage
+  ****************************************************************************************************
+  ***************************************************************************************************/
+  stage("BuildHubot")
+  {
+    sh "echo '#########################################'"
+    sh "echo 'Building Hubot: ${botname}'"
+    sh "echo '#########################################'"
+    
+    try
+    {
+      // deploy the hubot
+      sh "bash Automation/deploy-hubot.sh ${botname}"
+    }
+    catch(all)
+    {
+      echo "ERROR encountered during deployment "
+    }
+  }
+  
+  /***************************************************************************************************
+  ****************************************************************************************************
+  * END OF LOOP
+  ****************************************************************************************************
+  ***************************************************************************************************/
 }
 /***************************************************************************************************
 ****************************************************************************************************
@@ -121,23 +97,23 @@ node("hubot")
 @NonCPS
 def parseText(jsonpayload)
 {
-  	jp = new groovy.json.JsonSlurper().parseText(jsonpayload)
-  	gfi = new GitFlowInfo()
-  	gfi.prUrl=jp.payload.pr_url;
-  	gfi.prNumber=jp.payload.pr;
-  	gfi.gitHeadUrl=jp.payload.head;
-  	gfi.gitBaseUrl=jp.payload.base;
-  	gfi.gitRepository=jp.payload.repository;
-  	jp=null
-  	return gfi
+  jp = new groovy.json.JsonSlurper().parseText(jsonpayload)
+  gfi = new GitFlowInfo()
+  gfi.prUrl=jp.payload.pr_url;
+  gfi.prNumber=jp.payload.pr;
+  gfi.gitHeadUrl=jp.payload.head;
+  gfi.gitBaseUrl=jp.payload.base;
+  gfi.gitRepository=jp.payload.repository;
+  jp=null
+  return gfi
 }
 
 // GIT Information for flowdock labels
 class GitFlowInfo implements Serializable
 {
-  	String prUrl;
-  	String prNumber;
-  	String gitHeadUrl;
-  	String gitBaseUrl;
-  	String gitRepository;
+  String prUrl;
+  String prNumber;
+  String gitHeadUrl;
+  String gitBaseUrl;
+  String gitRepository;
 }
