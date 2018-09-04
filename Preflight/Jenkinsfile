@@ -12,89 +12,86 @@
 ///////////////////////////////////// START OF PIPELINE ////////////////////////////////////////////
 node("hubot")
 {
-	//clean the workspace
-   cleanWs()
-	
-	// Globals
-	def payload                     // GitHub Payload, loaded later
-	def botname="dankbot"           // Name of the hubot
-	def gitFlowInfo                 // The flow informatgion
-   def preflightStatus='success'   // Will be changed to failure if the build step fails
-   def branch = env.Branch
-	
-	// Clone it down
-	withCredentials([[
-	$class: 'UsernamePasswordMultiBinding', 
-	credentialsId: 'github-cred',
-	usernameVariable: 'USERNAME', 
-	passwordVariable: 'PASSWORD']]) 	
-	{
-		// Clone the repo 
-		git url: "https://$PASSWORD@github.service.consul/demo/Demo-Hubot", branch: "${branch}"
-	}
-
-  	
-	/***************************************************************************************************
-	****************************************************************************************************
-	* Preflight Hubot Stage
-	****************************************************************************************************
-	***************************************************************************************************/
-  	stage("Preflight")
-  	{
-		sh "echo '#########################################'"
-	   sh "echo 'Preflight of Hubot: ${botname}'"
-		sh "echo '#########################################'"
-		
-    	try
-    	{
-			// backup the instance
-    		sh "perl Automation/hubot-Linter.pl ${botname}"
-      }
-      catch(all)
-      {
-			echo "ERROR encountered during Stage: Preflight ${all}"
-         preflightStatus='failure'
-      }
-  	}
-
-   /***************************************************************************************************
-	****************************************************************************************************
-	* Update Status Stage
-	****************************************************************************************************
-	***************************************************************************************************/
-  	stage("Update-Status")
-  	{
-		sh "echo '#########################################'"
-	   sh "echo 'Updating status in GitHub'"
-		sh "echo '#########################################'"
-		
-    	try
-    	{
-			// backup the instance
-		withCredentials([[
-	$class: 'UsernamePasswordMultiBinding', 
-	credentialsId: 'github-cred',
-	usernameVariable: 'USERNAME', 
-	passwordVariable: 'PASSWORD']]) 	
-	{
-		// Clone the repo 
-		sh "perl Automation/updateGitHubStatus.pl ${preflightStatus} $PASSWORD"
-	}
-      }
-      catch(all)
-      {
-			echo "ERROR encountered during Stage: Update-Status ${all}"
-         throw all
-      }
-  	}
-
-	
-
-	/***************************************************************************************************
-	****************************************************************************************************
-	* END OF LOOP
-	****************************************************************************************************
-	***************************************************************************************************/
+  //clean the workspace
+  cleanWs()
+  
+  // Globals
+  def payload                     // GitHub Payload, loaded later
+  def botname="dankbot"           // Name of the hubot
+  def gitFlowInfo                 // The flow informatgion
+  def preflightStatus='success'   // Will be changed to failure if the build step fails
+  def branch = env.Branch
+  
+  // Clone it down
+  withCredentials([[
+    $class: 'UsernamePasswordMultiBinding', 
+    credentialsId: 'github-cred',
+    usernameVariable: 'USERNAME', 
+    passwordVariable: 'PASSWORD']]) 	
+    {
+      // Clone the repo 
+      git url: "https://$PASSWORD@github.service.consul/demo/Demo-Hubot", branch: "${branch}"
+    }
+    
+  /***************************************************************************************************
+  ****************************************************************************************************
+  * Preflight Hubot Stage
+  ****************************************************************************************************
+  ***************************************************************************************************/
+  stage("Preflight")
+  {
+    sh "echo '#########################################'"
+    sh "echo 'Preflight of Hubot: ${botname}'"
+    sh "echo '#########################################'"
+    
+    try
+    {
+      // backup the instance
+      sh "perl Automation/hubot-Linter.pl ${botname}"
+    }
+    catch(all)
+    {
+      echo "ERROR encountered during Stage: Preflight ${all}"
+      preflightStatus='failure'
+    }
+  }
+  
+  /***************************************************************************************************
+  ****************************************************************************************************
+  * Update Status Stage
+  ****************************************************************************************************
+  ***************************************************************************************************/
+  stage("Update-Status")
+  {
+    sh "echo '#########################################'"
+    sh "echo 'Updating status in GitHub'"
+    sh "echo '#########################################'"
+    
+    try
+    {
+      // backup the instance
+      withCredentials([[
+        $class: 'UsernamePasswordMultiBinding', 
+        credentialsId: 'github-cred',
+        usernameVariable: 'USERNAME', 
+        passwordVariable: 'PASSWORD']]) 	
+        {
+          // Clone the repo 
+          sh "perl Automation/updateGitHubStatus.pl ${preflightStatus} $PASSWORD"
+        }
+    }
+    catch(all)
+    {
+      echo "ERROR encountered during Stage: Update-Status ${all}"
+      throw all
+    }
+  }
+  
+  /***************************************************************************************************
+  ****************************************************************************************************
+  * END OF LOOP
+  ****************************************************************************************************
+  ***************************************************************************************************/
 }
 /***************************************************************************************************
 ****************************************************************************************************
@@ -106,23 +103,23 @@ node("hubot")
 @NonCPS
 def parseText(jsonpayload)
 {
-  	jp = new groovy.json.JsonSlurper().parseText(jsonpayload)
-  	gfi = new GitFlowInfo()
-  	gfi.prUrl=jp.payload.pr_url;
-  	gfi.prNumber=jp.payload.pr;
-  	gfi.gitHeadUrl=jp.payload.head;
-  	gfi.gitBaseUrl=jp.payload.base;
-  	gfi.gitRepository=jp.payload.repository;
-  	jp=null
-  	return gfi
+  jp = new groovy.json.JsonSlurper().parseText(jsonpayload)
+  gfi = new GitFlowInfo()
+  gfi.prUrl=jp.payload.pr_url;
+  gfi.prNumber=jp.payload.pr;
+  gfi.gitHeadUrl=jp.payload.head;
+  gfi.gitBaseUrl=jp.payload.base;
+  gfi.gitRepository=jp.payload.repository;
+  jp=null
+  return gfi
 }
 
 // GIT Information for flowdock labels
 class GitFlowInfo implements Serializable
 {
-  	String prUrl;
-  	String prNumber;
-  	String gitHeadUrl;
-  	String gitBaseUrl;
-  	String gitRepository;
+  String prUrl;
+  String prNumber;
+  String gitHeadUrl;
+  String gitBaseUrl;
+  String gitRepository;
 }
