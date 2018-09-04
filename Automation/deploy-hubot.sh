@@ -34,7 +34,7 @@ echo "Setting up tools and paths"
 ##########################
 echo "----------------------------------------------------------------"
 echo "Setting aside hubot.env"
-mv /opt/hubot/hubot.env /tmp/hubot.env.hold
+sudo su - $BOTNAME -c "mv /opt/hubot/hubot.env /tmp/hubot.env.hold"
 
 ###################
 # Reset to origin #
