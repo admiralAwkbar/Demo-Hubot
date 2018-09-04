@@ -73,6 +73,7 @@ node("hubot")
     try
     {
       // deploy the hubot
+      sh "sudo chmod +x Automation/deploy-hubot.sh"
       sh "sudo bash -c 'Automation/deploy-hubot.sh ${botname}'"
     }
     catch(all)
