@@ -98,7 +98,7 @@ def AllowQueue():
     # Need to sleep for some time to allow jenkins to set the job
     # Jenkins is a dumb bastard who queues shit up, then waits for it to get a real job
     # So we must wait for it...
-    cmd = "sleep 8s 2>&1"
+    cmd = "sleep 13s 2>&1"
     #print "Waiting for few secods to allow jenkins to queue job"
     status, output = commands.getstatusoutput(cmd)
     #print "Status:[%s]" % (status)
