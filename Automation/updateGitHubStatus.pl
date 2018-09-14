@@ -25,7 +25,7 @@ my $sha = $ENV{'SHA'};                 # SHA sum for the branch
 my $state = undef;                     # State to return to GHE
 my $exitCode = undef;                  # Code to exit with
 my $description = undef;               # Description of the build
-my $context = "Hubot Preflight";       # Context of the build
+my $context = "Hubot-Preflight";       # Context of the build
 my $statusUrlBase = undef;             # Url for Status
 
 ###############
