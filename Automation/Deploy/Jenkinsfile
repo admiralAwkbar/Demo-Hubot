@@ -22,21 +22,20 @@ node("hubot")
   // Globals
   def payload
   def masterJobNumber
-  def botname="dankbot"
   def gitFlowInfo
 
   withCredentials([[
-    $class: 'UsernamePasswordMultiBinding', 
+    $class: 'UsernamePasswordMultiBinding',
     credentialsId: 'github-cred',
-    usernameVariable: 'USERNAME', 
-    passwordVariable: 'PASSWORD']]) 
+    usernameVariable: 'USERNAME',
+    passwordVariable: 'PASSWORD']])
     {
       //sh 'echo uname=$USERNAME pwd=$PASSWORD'
 
-      // Clone the repo 
+      // Clone the repo
       git url: "https://$PASSWORD@github.service.consul/demo/Demo-Hubot", branch: "master"
     }
-    
+
   /***************************************************************************************************
   ****************************************************************************************************
   * Backup Hubot Stage
@@ -45,20 +44,20 @@ node("hubot")
   stage("BackupHubot")
   {
     sh "echo '#########################################'"
-    sh "echo 'Backup of Hubot: ${botname}'"
+    sh "echo 'Backup of Hubot'"
     sh "echo '#########################################'"
-    
+
     try
     {
       // backup the instance
-      sh "perl Automation/Hubot-Backup.pl ${botname}"
+      sh "perl Automation/Hubot-Backup.pl"
     }
     catch(all)
     {
       echo "ERROR encountered during backup"
     }
   }
-  
+
   /***************************************************************************************************
   ****************************************************************************************************
   * Build Hubot Stage
@@ -67,21 +66,21 @@ node("hubot")
   stage("BuildHubot")
   {
     sh "echo '#########################################'"
-    sh "echo 'Building Hubot: ${botname}'"
+    sh "echo 'Building Hubot'"
     sh "echo '#########################################'"
-    
+
     try
     {
       // deploy the hubot
       sh "sudo chmod +x Automation/deploy-hubot.sh"
-      sh "sudo bash -c 'Automation/deploy-hubot.sh ${botname}'"
+      sh "sudo bash -c 'Automation/deploy-hubot.sh'"
     }
     catch(all)
     {
       echo "ERROR encountered during deployment "
     }
   }
-  
+
   /***************************************************************************************************
   ****************************************************************************************************
   * END OF LOOP
