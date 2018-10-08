@@ -14,25 +14,24 @@ node("hubot")
 {
   //clean the workspace
   cleanWs()
-  
+
   // Globals
   def payload                     // GitHub Payload, loaded later
-  def botname="dankbot"           // Name of the hubot
   def gitFlowInfo                 // The flow informatgion
   def preflightStatus='success'   // Will be changed to failure if the build step fails
   def branch = env.Branch
-  
+
   // Clone it down
   withCredentials([[
-    $class: 'UsernamePasswordMultiBinding', 
+    $class: 'UsernamePasswordMultiBinding',
     credentialsId: 'github-cred',
-    usernameVariable: 'USERNAME', 
-    passwordVariable: 'PASSWORD']]) 	
+    usernameVariable: 'USERNAME',
+    passwordVariable: 'PASSWORD']])
     {
-      // Clone the repo 
+      // Clone the repo
       git url: "https://$PASSWORD@github.service.consul/demo/Demo-Hubot", branch: "${branch}"
     }
-    
+
   /***************************************************************************************************
   ****************************************************************************************************
   * Preflight Hubot Stage
@@ -41,13 +40,13 @@ node("hubot")
   stage("Preflight")
   {
     sh "echo '#########################################'"
-    sh "echo 'Preflight of Hubot: ${botname}'"
+    sh "echo 'Preflight of Hubot'"
     sh "echo '#########################################'"
-    
+
     try
     {
       // backup the instance
-      sh "perl Automation/hubot-Linter.pl ${botname}"
+      sh "perl Automation/hubot-Linter.pl"
     }
     catch(all)
     {
@@ -55,7 +54,7 @@ node("hubot")
       preflightStatus='failure'
     }
   }
-  
+
   /***************************************************************************************************
   ****************************************************************************************************
   * Update Status Stage
@@ -66,17 +65,17 @@ node("hubot")
     sh "echo '#########################################'"
     sh "echo 'Updating status in GitHub'"
     sh "echo '#########################################'"
-    
+
     try
     {
       // backup the instance
       withCredentials([[
-        $class: 'UsernamePasswordMultiBinding', 
+        $class: 'UsernamePasswordMultiBinding',
         credentialsId: 'github-cred',
-        usernameVariable: 'USERNAME', 
-        passwordVariable: 'PASSWORD']]) 	
+        usernameVariable: 'USERNAME',
+        passwordVariable: 'PASSWORD']])
         {
-          // Clone the repo 
+          // Clone the repo
           sh "perl Automation/updateGitHubStatus.pl ${preflightStatus} $PASSWORD"
         }
     }
@@ -86,7 +85,7 @@ node("hubot")
       throw all
     }
   }
-  
+
   /***************************************************************************************************
   ****************************************************************************************************
   * END OF LOOP
