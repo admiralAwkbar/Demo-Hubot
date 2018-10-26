@@ -7,7 +7,6 @@
   "dependencies": {
     "hubot-maps": ">= 0.0.1",
     "coffeescript": "1.12.4",
-    "hubot-shipit": ">= 0.0.1",
     "hubot-help": ">= 0.0.1",
     "hubot-diagnostics": "0.0.1",
     "hubot-pugme": "~0.1.0",
