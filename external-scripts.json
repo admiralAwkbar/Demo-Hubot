@@ -5,6 +5,5 @@
   "hubot-maps",
   "hubot-redis-brain",
   "hubot-rules",
-  "hubot-github-webhook-listener",
-  "hubot-shipit"
+  "hubot-github-webhook-listener"
 ]
