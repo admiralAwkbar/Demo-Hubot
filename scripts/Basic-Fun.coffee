@@ -271,6 +271,12 @@ module.exports = (robot) ->
       res.send message
     , min * 1000 * 60
 
+  ###############
+  # Ship IT!!!! #
+  ###############
+  robot.respond /(ship it|shipit)/i, (msg) ->
+    msg.send msg.random squirrels
+
 #######################
 #######################
 ## END OF THE SCRIPT ##
