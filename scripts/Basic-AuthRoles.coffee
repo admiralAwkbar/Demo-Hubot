@@ -1,56 +1,61 @@
-# Description
-#   Assign roles to users and restrict command access in other scripts.
+# Description:
+#   Auth allows you to assign roles to users which can be used by other scripts
+#   to restrict access to Hubot commands
+#
+# Dependencies:
+#   None
 #
 # Configuration:
-#   HUBOT_AUTH_ADMIN - A comma separate list of user IDs
+#   HUBOT_AUTH_ADMIN
 #
 # Commands:
 #   hubot <user> has <role> role - Assigns a role to a user
-#   hubot remove <user> from <role> role - Removes a role from a user
-#   hubot what roles does <user> have - Find out what roles a user has
-#   hubot what roles do I have - Find out what roles you have
-#   hubot who has <role> role - Find out who has the given role
+#   hubot <user> doesn't have <role> role - Removes a role from a user
+#   hubot what role does <user> have - Find out what roles are assigned to a specific user
+#   hubot who has admin role - Find out who's an admin and can assign roles
 #
 # Notes:
-#   * Call the method: robot.auth.hasRole(msg.envelope.user,'<role>')
+#   * Call the method: robot.auth.hasRole('<user>','<role>')
 #   * returns bool true or false
 #
 #   * the 'admin' role can only be assigned through the environment variable
 #   * roles are all transformed to lower case
 #
-#   * The script assumes that user IDs will be unique on the service end as to
-#     correctly identify a user. Names were insecure as a user could impersonate
-#     a user
+# Author:
+#   @admiralAwkbar
 
-###########################
-# Read in the admin Users #
-###########################
-config =
-  admin_list: process.env.HUBOT_AUTH_ADMIN
-
-#################
-# Start Looking #
-#################
+############################
+# Start the script listner #
+############################
 module.exports = (robot) ->
 
-  ####################
-  # Check for Admins #
-  ####################
-  unless config.admin_list?
-    robot.logger.warning 'The HUBOT_AUTH_ADMIN environment variable not set'
+  ###########################
+  # Pull in the admin Users #
+  ###########################
+  admin = process.env.HUBOT_AUTH_ADMIN
 
   ####################
-  # Split out admins #
+  # Create the array #
   ####################
-  if config.admin_list?
-    admins = config.admin_list.split ','
+  if admin?
+    admins = admin.toLowerCase().split(',')
   else
     admins = []
 
+  ############################
+  # Set up the Class actions #
+  ############################
   class Auth
+
+    #######################
+    # Validate admin user #
+    #######################
     isAdmin: (user) ->
       user.id.toString() in admins
 
+    ######################
+    # Validate user role #
+    ######################
     hasRole: (user, roles) ->
       userRoles = @userRoles(user)
       if userRoles?
@@ -59,6 +64,9 @@ module.exports = (robot) ->
           return true if role in userRoles
       return false
 
+    #######################
+    # Get users with role #
+    #######################
     usersWithRole: (role) ->
       users = []
       for own key, user of robot.brain.data.users
@@ -66,6 +74,9 @@ module.exports = (robot) ->
           users.push(user.name)
       users
 
+    ##################
+    # Get user roles #
+    ##################
     userRoles: (user) ->
       roles = []
       if user? and robot.auth.isAdmin user
@@ -74,83 +85,86 @@ module.exports = (robot) ->
         roles = roles.concat user.roles
       roles
 
-  ##################
-  # Start New Auth #
-  ##################
+  ################
+  # Set the Auth #
+  ################
   robot.auth = new Auth
 
   #######################
-  # Assign User to Role #
+  # Assign role to user #
   #######################
-  robot.respond /@?(\b(?!who\b)\w+) ha(s|ve) (["'\w: -_]+) role/i, (msg) ->
-    unless robot.auth.isAdmin msg.message.user
-      msg.reply "Sorry, only admins can assign roles."
-    else
-      name = msg.match[1].trim()
-      if name.toLowerCase() is 'i' then name = msg.message.user.name
-      newRole = msg.match[3].trim().toLowerCase()
+  robot.respond /@?(.+) (has) (["'\w: -_]+) (role)/i, (msg) ->
+    name    = msg.match[1].trim().toLowerCase()
+    newRole = msg.match[3].trim().toLowerCase()
 
-      unless name.toLowerCase() in ['', 'who', 'what', 'where', 'when', 'why']
-        user = robot.brain.userForName(name)
-        return msg.reply "#{name} does not exist" unless user?
-        user.roles or= []
+    unless name in ['', 'who', 'what', 'where', 'when', 'why']
+      user = robot.brain.userForName(name)
+      if !user?
+        msg.reply "#{name} does not exist"
+        return
 
-        if newRole in user.roles
-          msg.reply "#{name} already has the '#{newRole}' role."
+        user.roles = user.roles or [ ]
+
+      ############################
+      # Check if the role exists #
+      ############################
+      if newRole in user.roles
+        msg.reply "#{name} already has the '#{newRole}' role."
+      else
+        if newRole == 'admin'
+          msg.reply "Sorry, the 'admin' role can only be defined in the HUBOT_AUTH_ADMIN env variable."
         else
-          if newRole is 'admin'
-            msg.reply "Sorry, the 'admin' role can only be defined in the HUBOT_AUTH_ADMIN env variable."
-          else
-            myRoles = msg.message.user.roles or []
+          myRoles = msg.message.user.roles or [ ]
+          if msg.message.user.name.toLowerCase() in admin.toLowerCase().split(',')
             user.roles.push(newRole)
-            msg.reply "OK, #{name} has the '#{newRole}' role."
+            msg.reply "Ok, #{name} has the '#{newRole}' role."
+                  
+  #############################
+  # Remove a user from a role #
+  #############################
+  robot.respond /@?(.+) (doesn't have|does not have) (["'\w: -_]+) (role)/i, (msg) ->
+    name    = msg.match[1].trim().toLowerCase()
+    newRole = msg.match[3].trim().toLowerCase()
 
-  #########################
-  # Remove user from role #
-  #########################
-  robot.respond /remove @?(.+) from (["'\w: -_]+) role/i, (msg) ->
-    unless robot.auth.isAdmin msg.message.user
-      msg.reply "Sorry, only admins can remove roles."
-    else
-      name = msg.match[1].trim()
-      if name.toLowerCase() is 'i' then name = msg.message.user.name
-      newRole = msg.match[4].trim().toLowerCase()
+    unless name in ['', 'who', 'what', 'where', 'when', 'why']
+      user = robot.brain.userForName(name)
+      if !user?
+        msg.reply "#{name} does not exist"
+        return
 
-      unless name.toLowerCase() in ['', 'who', 'what', 'where', 'when', 'why']
-        user = robot.brain.userForName(name)
-        return msg.reply "#{name} does not exist" unless user?
-        user.roles or= []
-
-        if newRole is 'admin'
-          msg.reply "Sorry, the 'admin' role can only be removed from the HUBOT_AUTH_ADMIN env variable."
-        else
-          myRoles = msg.message.user.roles or []
+      user.roles = user.roles or [ ]
+      if newRole == 'admin'
+        msg.reply "Sorry, the 'admin' role can only be removed from the HUBOT_AUTH_ADMIN env variable."
+      else
+        myRoles = msg.message.user.roles or [ ]
+        if msg.message.user.name.toLowerCase() in admin.toLowerCase().split(',')
           user.roles = (role for role in user.roles when role isnt newRole)
-          msg.reply "OK, #{name} doesn't have the '#{newRole}' role."
+          msg.reply "Ok, #{name} doesn't have the '#{newRole}' role."
 
-  #####################
-  # Check Users roles #
-  #####################
-  robot.respond /what roles? do(es)? @?(.+) have\?*$/i, (msg) ->
+  #######################
+  # Find roles per user #
+  #######################
+  robot.respond /(what role does|what roles does) @?(.+) (have)\?*$/i, (msg) ->
     name = msg.match[2].trim()
-    if name.toLowerCase() is 'i' then name = msg.message.user.name
+
     user = robot.brain.userForName(name)
-    return msg.reply "#{name} does not exist" unless user?
-    userRoles = robot.auth.userRoles(user)
+    if !user?
+      msg.reply "#{name} does not exist"
+      return
 
-    if userRoles.length == 0
-      msg.reply "#{name} has no roles."
-    else
-      msg.reply "#{name} has the following roles: #{userRoles.join(', ')}."
+    user.roles = user.roles or [ ]
 
-  ##########################
-  # Find all users in role #
-  ##########################
-  robot.respond /who has (["'\w: -_]+) role\?*$/i, (msg) ->
-    role = msg.match[1]
-    userNames = robot.auth.usersWithRole(role) if role?
+    if name.toLowerCase() in admin.toLowerCase().split(',') then isAdmin = ' and is also an admin' else isAdmin = ''
+    msg.reply "#{name} has the following roles: " + user.roles + isAdmin + "."
 
-    if userNames.length > 0
-      msg.reply "The following people have the '#{role}' role: #{userNames.join(', ')}"
-    else
-      msg.reply "There are no people that have the '#{role}' role."
+  ########################
+  # List all admin users #
+  ########################
+  robot.respond /who has admin role\?*$/i, (msg) ->
+    msg.reply "The following people have the 'admin' role: #{admin.split(',')}"
+
+###################
+###################
+## END OF SCRIPT ##
+###################
+###################
