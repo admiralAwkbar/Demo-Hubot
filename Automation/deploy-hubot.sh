@@ -145,6 +145,13 @@ echo "----------------------------------------------------------------"
 echo "Sourcing the env"
 sudo su - $BOTNAME -c "cd $DIR; . /opt/hubot/hubot.env"
 
+##########################
+# Update redis DB config #
+##########################
+echo "----------------------------------------------------------------"
+echo "Updating Redis BG Save settings"
+echo "config set stop-writes-on-bgsave-error no" | redis-cli
+
 ####################
 # restart $BOTNAME #
 ####################
