@@ -24,15 +24,6 @@ jenkinsUserName = process.env.HUBOT_JENKINS_AUTH_USER
 jenkinsPasswd = process.env.HUBOT_JENKINS_AUTH_PASSWD
 jenkinsToken = process.env.HUBOT_JENKINS_SECRET
 
-#####################
-# List Jenkins Jobs #
-#####################
-listJobs = (cb) =>
-  path = "/api/json"
-  httpGet path, (err, result) =>
-    return cb err if err?
-    cb null, result.jobs
-
 ########################
 # Describe Jenkins Job #
 ########################
@@ -149,7 +140,6 @@ httpRequest = (options, cb) =>
     cb null, body, res
 
 # Exports back to main coffeescript
-exports.listJobs= listJobs
 exports.buildJob = buildJob
 exports.buildJsonJob = buildJsonJob
 exports.describeJob= describeJob
