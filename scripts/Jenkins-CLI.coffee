@@ -1,5 +1,5 @@
 # Description:
-#   Interact with your Jenkins CI server 
+#   Interact with your Jenkins CI server
 #
 # Dependencies:
 #   None
@@ -13,19 +13,17 @@
 # Commands:
 #   hubot jenkins build <job> - builds the specified Jenkins job
 #   hubot jenkins build <job>, <params> - builds the specified Jenkins job with parameters as key=value&key2=value2
-#   hubot jenkins list <filter> - lists Jenkins jobs
 #   hubot jenkins describe <job> - Describes the specified Jenkins job
 #   hubot jenkins last <job> - Details about the last build for the specified Jenkins job
 #   hubot jenkins job queue - Returns the size of the jenkins queue
 #
 # Author:
-#   AdmiralAwkbar
+#   @admiralAwkbar
 
 ###########
 # Globals #
 ###########
 url = process.env.HUBOT_JENKINS_URL
-port = process.env.HUBOT_JENKINS_PORT
 
 ############################
 # Pointing to utils script #
@@ -73,43 +71,9 @@ module.exports = (robot) ->
 
 
   ####################################################
-  # Jenkins List Jobs Loop ###########################
-  ####################################################
-  robot.respond /(?:jenkins)? list( (.+))?/i, (msg) ->
-    filter = msg.match[1].replace /^\s+|\s+$/g, ""
-    robot.logger.info "List jobs"
-    jenkin.listJobs (err, jobs) =>
-      if err?
-        robot.logger.error "Failed to list jobs", err
-        return msg.send "Jenkins says: #{err.message}"
-
-      response = "List of Jobs:\n"
-      for job in jobs
-        status = if job.color == "red"
-                   "FAILED"
-                else if job.color == "aborted"
-                  "ABORTED"
-                else if job.color == "aborted_anime"
-                  "CURRENTLY RUNNING"
-                else if job.color == "red_anime"
-                  "CURRENTLY RUNNING"
-                else if job.color == "blue_anime"
-                  "CURRENTLY RUNNING"
-                else
-                  "PASSED"
-        response = response + "-------------------------\n"
-        response = response + "Job:#{job.name}\n"
-        response = response + "Status#{status}\n"
-      response.trim()
-      msg.send response
-  ############ END OF LOOP ###########################
-  ####################################################
-
-
-  ####################################################
   # Jenkins Describe Jobs Loop #######################
   ####################################################
-  robot.respond /(?:jenkins)? describe (.*)/i, (msg) ->
+  robot.respond /(?:jenkins)? describe(?:\s)?(.*)/i, (msg) ->
     jobName = msg.match[1].replace /^\s+|\s+$/g, ""
     robot.logger.info "Describe job #{jobName}"
     jenkin.describeJob jobName, (err, job) =>
@@ -152,14 +116,14 @@ module.exports = (robot) ->
 
         if not job.lastBuild
           return
-  ############ END OF LOOP ###########################       
+  ############ END OF LOOP ###########################
   ####################################################
 
 
   ####################################################
   # Jenkins last Jobs Loop ###########################
   ####################################################
-  robot.respond /(?:jenkins)? last (.*)/i, (msg) ->
+  robot.respond /(?:jenkins)? last(?:\s)?(.*)/i, (msg) ->
     jobName = msg.match[1].replace /^\s+|\s+$/g, ""
     robot.logger.info "Last job #{jobName}"
     jenkin.lastJob jobName, (err, job) =>
