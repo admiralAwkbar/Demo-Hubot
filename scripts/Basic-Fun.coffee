@@ -277,12 +277,6 @@ module.exports = (robot) ->
   robot.respond /(ship it|shipit)/i, (msg) ->
     msg.send msg.random squirrels
 
-  ##############
-  # Hubot Ping #
-  ##############
-  robot.respond /PING$/i, (msg) ->
-    msg.send "PONG"
-
 #######################
 #######################
 ## END OF THE SCRIPT ##
