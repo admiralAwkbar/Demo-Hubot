@@ -22,6 +22,7 @@ $|=1;
 ############
 # GLOBALS: #
 ############
+my $hubotName = undef;              # Name of the hubot
 my $user = undef;                   # Jenkins User
 my $token = undef;                  # Jenkins User Token
 my $jenkinsUrl = undef;             # jenkins Url
@@ -39,6 +40,7 @@ my $errCount = 0;           	# Count of errors found
 #########
 # MAIN: #
 #########
+GetHubotName();     # Get the name of the hubot
 GetCreds();         # Get the jenkins creds info
 GetQueueJson();     # Get the json object with queue data
 ParseQueueData();   # Pull out the good data
@@ -54,13 +56,55 @@ sub PrintData
     exit(0);
 }
 #######################################################################
+#### SUB ROUTINE GetHubotName #########################################
+sub GetHubotName
+{
+   # Need to get the hubots name from the system
+   my $getUserCommand = "ps -aux |grep hubot |grep -v grep | awk \'{print \$1}\' 2>&1";
+   my $result = `$getUserCommand`;
+
+   # verify the shell came back successful
+   if ($?!=0)
+   {
+      print "ERROR! Failed to get Hubot user!\n";
+      exit(1);
+   }
+
+   # Verify the name has length
+   if (length($result lt 1))
+   {
+      print "ERROR! Retrieved running hubot name and got:\[$result\]\n";
+      exit(1);
+   }
+
+   # Set the huubots name
+   chomp($result);
+   $hubotName = $result;
+}
+#######################################################################
 #### SUB ROUTINE GetCreds #############################################
 sub GetCreds
 {
+   ######################
+   # Get the Hubot Name #
+   ######################
+   my $getNameCommand = 'ps -aux |grep hubot |grep -v grep | awk \'{print $1}\'';
+   my $result = `$getNameCommand`;
+
+   if ($?==0)
+   {
+      chomp($result);
+      $hubotName = $result;
+   }
+   else
+   {
+      print "ERROR! Failed to get hubot name!\n";
+      exit(1);
+   }
    ###################################
    # Get the HUBOT_JENKINS_SHORT_URL #
    ###################################
-   my $urlCommand = "grep HUBOT_JENKINS_SHORT_URL /opt/hubot/hubot.env 2>&1";
+   my $urlCommand = "grep HUBOT_JENKINS_SHORT_URL /opt/$hubotName/hubot.env 2>&1";
    my $urlResult = `$urlCommand`;
 
    if ($?==0)
@@ -79,7 +123,7 @@ sub GetCreds
    ###################################
    # Get the HUBOT_JENKINS_AUTH_USER #
    ###################################
-   my $userCommand = "grep HUBOT_JENKINS_AUTH_USER /opt/hubot/hubot.env 2>&1";
+   my $userCommand = "grep HUBOT_JENKINS_AUTH_USER /opt/$hubotName/hubot.env 2>&1";
    my $userResult = `$userCommand`;
 
    if ($?==0)
@@ -98,7 +142,7 @@ sub GetCreds
    #####################################
    # Get the HUBOT_JENKINS_AUTH_PASSWD #
    #####################################
-   my $passwdCommand = "grep HUBOT_JENKINS_AUTH_PASSWD /opt/hubot/hubot.env 2>&1";
+   my $passwdCommand = "grep HUBOT_JENKINS_AUTH_PASSWD /opt/$hubotName/hubot.env 2>&1";
    my $passwdResult = `$passwdCommand`;
 
    if ($?==0)
@@ -128,9 +172,9 @@ sub GetCreds
 sub GetQueueJson
 {
     # Grabbing the json payload from the api endpoint
-    my $command = "curl -s $getQueueUrl 2>&1";
+    my $jsonCommand = "curl -s $getQueueUrl 2>&1";
     #print "Running Command:\[$command\]\n";
-    my $result = `$command`;
+    my $jsonResult = `$jsonCommand`;
 
     if ($?!=0)
     {
@@ -138,10 +182,10 @@ sub GetQueueJson
         exit(1);
     }
 
-    chomp($result);
-    #print "Result:\[$result\]\n";
+    chomp($jsonResult);
+    #print "Result:\[$jsonResult\]\n";
 
-    $json = $result;
+    $json = $jsonResult;
 }
 ######################################################################
 #### SUB ROUTINE GetBuildingData #####################################
@@ -161,6 +205,10 @@ sub GetBuildingData
     chomp($result);
     #print "Result:\[$result\]\n";
     $buildingCount = $result =~ s/$jenkinsUrl/$jenkinsUrl/g;
+    if (length($buildingCount) lt 1)
+    {
+      $buildingCount = 0;
+    }
 }
 #######################################################################
 #### SUB ROUTINE ParseQueueData #######################################
