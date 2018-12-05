@@ -150,12 +150,6 @@ module.exports = (robot) ->
   robot.respond /show me what you got/i, (msg) ->
     msg.send "http://i.imgur.com/pKEKVHM.gif"
 
-  #########################
-  # Tales from the script #
-  #########################
-  robot.respond /tales from the script/i, (msg) ->
-    msg.send "http://giphy.com/gifs/3o6gE22BsPEov16M12"
-
   ###############
   # Hammer time #
   ###############
@@ -163,30 +157,6 @@ module.exports = (robot) ->
     msg.send msg.random hammerTime
     #  sending the picture
     msg.send "Server time is: #{new Date()}"
-
-  ######################
-  # Who is your master #
-  ######################
-  robot.respond /who is your master/i, (msg) ->
-    msg.send "I bow to no mortal, except admiralSnackbar..."
-
-  ################
-  # Who is Lukas #
-  ################
-  robot.respond /who is (lucas|lukas)/i, (msg) ->
-    msg.send "Legend has it, he is the only person to have seen bigfoot"
-
-  ##################
-  # Who is michael #
-  ##################
-  robot.respond /who is michael/i, (msg) ->
-    msg.send "Hes known as the Migarjo..."											
-
-  #################
-  # Who is Daniel #
-  #################
-  robot.respond /who is daniel/i, (msg) ->
-    msg.send "i have been told Eddie Smurfy is his overlord"
 
   #####################
   # How are you doing #
@@ -253,7 +223,7 @@ module.exports = (robot) ->
   # Do you hubot #
   ################
   robot.respond /do you even hubot/i, (msg) ->
-    msg.send "Do you even human  ?"
+    msg.send "Do you even human?"
 
   ###################
   # Thank the hubot #
