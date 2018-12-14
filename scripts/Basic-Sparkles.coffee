@@ -59,6 +59,7 @@ module.exports = (robot) ->
     robot.respond /sparkle (.*?)\s?$/i, (msg) ->
       pts = 1
       userName = msg.match[1].replace /^\s+|\s+$/g, ""
+      userName = userName.replace /^\@/g, ""
       # add 1 point to userName
       award_sparkles(msg, userName, pts)
       save(robot)
@@ -72,6 +73,7 @@ module.exports = (robot) ->
       # remove 1 point from userName
       pts = -1
       userName = msg.match[1].replace /^\s+|\s+$/g, ""
+      userName = userName.replace /^\@/g, ""
       remove_sparkles(msg, userName, pts)
       ###########
       # Save it #
@@ -85,6 +87,7 @@ module.exports = (robot) ->
     ######################################
     robot.respond /take all sparkles from (.*?)\s?$/i, (msg) ->
       userName = msg.match[1].replace /^\s+|\s+$/g, ""
+      userName = userName.replace /^\@/g, ""
       role = 'sparkle'
       unless robot.auth.hasRole(msg.envelope.user, role)
         msg.send "Access denied. You must have this role to use this command: #{role}"
@@ -106,6 +109,7 @@ module.exports = (robot) ->
     ###############################
     robot.respond /how many sparkles does (.*?) have\??/i, (msg) ->
       userName = msg.match[1].replace /^\s+|\s+$/g, ""
+      userName = userName.replace /^\@/g, ""
       sparkles[userName] ?= 0
       ################################
       # Send the message to the user #
