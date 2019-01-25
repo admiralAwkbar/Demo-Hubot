@@ -1,0 +1,28 @@
+# This is the CODEOWNERS file that helps determine who can validate what code in a PR review
+# Please update the file as this code base evolves
+
+################
+# Single users #
+################
+
+# Admiral is always the boss
+*    @admiralawkbar
+
+# Hubot can update itself
+*    @hubot
+
+#########
+# Teams #
+#########
+
+# Robots to solve everything
+*    @demo/robots
+
+# Hardware team for the autmation
+Automation/*    @demo/hardware-experts
+
+# Node Experts for the codebase
+scripts/*    @demo/node-experts
+
+# Node experts to solve dependency issues
+package.json     @demo/node-experts
