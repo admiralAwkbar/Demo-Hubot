@@ -69,9 +69,9 @@ echo ""
 sudo su - $BOTNAME -c "cd $DIR; npm cache clean -f"
 sudo su - $BOTNAME -c "cd $DIR; sudo npm install -g n"
 sudo su - $BOTNAME -c "cd $DIR; sudo n stable"
-sudo su - $BOTNAME -c "cd $DIR; npm install"
-sudo su - $BOTNAME -c "cd $DIR; npm install hubot-github-webhook-listener"
-sudo su - $BOTNAME -c "cd $DIR; npm install --save https-proxy-agent"
+sudo su - $BOTNAME -c "cd $DIR; sudo npm install"
+sudo su - $BOTNAME -c "cd $DIR; sudo npm install hubot-github-webhook-listener"
+sudo su - $BOTNAME -c "cd $DIR; sudo npm install --save https-proxy-agent"
 
 #######################
 # Removed after we moved to AWS
