@@ -33,7 +33,7 @@ node("hubot")
       //sh 'echo uname=$USERNAME pwd=$PASSWORD'
 
       // Clone the repo
-      git url: "https://$PASSWORD@github.service.consul/demo/Demo-Hubot", branch: "master"
+      git url: "https://$PASSWORD@github.service.consul/demo-org/Demo-Hubot", branch: "master"
     }
 
   /***************************************************************************************************
