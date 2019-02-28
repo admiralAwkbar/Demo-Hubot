@@ -29,7 +29,7 @@ node("hubot")
     passwordVariable: 'PASSWORD']])
     {
       // Clone the repo
-      git url: "https://$PASSWORD@github.service.consul/demo/Demo-Hubot", branch: "${branch}"
+      git url: "https://$PASSWORD@github.service.consul/demo-org/Demo-Hubot", branch: "${branch}"
     }
 
   /***************************************************************************************************
