@@ -25,8 +25,8 @@
 #   "./utilities/localwebserver"
 #
 # Commands:
-#   hubot graf db <dashboard slug>[:<panel id>][ <template variables>][ last <last cluase> | from <from clause>] to <to clause>] - Show grafana dashboard graphs
-#   hubot graf list <filter> - Lists grafana dashboards. If a filter is specified, only matched dashboards are listed.
+#   `hubot graf db <dashboard slug>[:<panel id>][ <template variables>][ last <last cluase> | from <from clause>] to <to clause>]` - Show grafana dashboard graphs
+#   `hubot graf list <filter>` - Lists grafana dashboards. If a filter is specified, only matched dashboards are listed.
 #
 
 request = require 'request'
