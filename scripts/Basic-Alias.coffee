@@ -2,10 +2,10 @@
 #   Action alias for hubot
 #
 # Commands:
-#   hubot alias xxx=yyy - Create alias xxx for action yyy
-#   hubot alias rm xxx - Remove alias xxx from the table
-#   hubot alias clear - Clear the alias table
-#   hubot alias - Display table of aliases as Key : Value pairs
+#   `hubot alias xxx=yyy` - Create alias xxx for action yyy
+#   `hubot alias rm xxx` - Remove alias xxx from the table
+#   `hubot alias clear` - Clear the alias table
+#   `hubot alias` - Display table of aliases as Key : Value pairs
 #
 # Author:
 #   admiralAwkbar@github.com
