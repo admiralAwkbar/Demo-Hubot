@@ -3,7 +3,7 @@
 #	These were created to blow off steam
 #
 # Commands:
-#   hubot echo * - repeats what you say
+#   `hubot echo *` - repeats what you say
 #
 # Author:
 #   admiralAwkbar@github.com 
