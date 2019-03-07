@@ -103,7 +103,7 @@ module.exports = (robot) ->
         msg.reply "#{name} does not exist"
         return
 
-        user.roles = user.roles or [ ]
+      user.roles = user.roles or [ ]
 
       ############################
       # Check if the role exists #
