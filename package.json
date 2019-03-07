@@ -23,7 +23,7 @@
     "plotly": "~1.0.2",
     "underscore": "*",
     "https-proxy-agent": "~1.0.0",
-    "debug": "2.2.0"
+    "debug": ">=2.6.9"
   },
   "engines": {
     "node": "0.10.x"
