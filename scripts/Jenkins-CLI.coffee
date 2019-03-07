@@ -11,11 +11,11 @@
 #   Auth should be in the "user:password" format.
 #
 # Commands:
-#   hubot jenkins build <job> - builds the specified Jenkins job
-#   hubot jenkins build <job>, <params> - builds the specified Jenkins job with parameters as key=value&key2=value2
-#   hubot jenkins describe <job> - Describes the specified Jenkins job
-#   hubot jenkins last <job> - Details about the last build for the specified Jenkins job
-#   hubot jenkins job queue - Returns the size of the jenkins queue
+#   `hubot jenkins build <job>` - builds the specified Jenkins job
+#   `hubot jenkins build <job>, <params>` - builds the specified Jenkins job with parameters as key=value&key2=value2
+#   `hubot jenkins describe <job>` - Describes the specified Jenkins job
+#   `hubot jenkins last <job>` - Details about the last build for the specified Jenkins job
+#   `hubot jenkins job queue` - Returns the size of the jenkins queue
 #
 # Author:
 #   @admiralAwkbar
