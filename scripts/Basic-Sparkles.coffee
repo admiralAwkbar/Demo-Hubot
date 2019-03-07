@@ -8,10 +8,10 @@
 #   None
 #
 # Commands:
-#   hubot sparkle <username> - award sparkles to <username>
-#   hubot desparkle <username> - take away sparkles from <username>
-#   hubot how many sparkles does <username> have? - list how many sparkles <username> has
-#   hubot take all sparkles from <username> - removes all sparkles from <username>
+#   `hubot sparkle <username>` - award sparkles to <username>
+#   `hubot desparkle <username>` - take away sparkles from <username>
+#   `hubot how many sparkles does <username> have?` - list how many sparkles <username> has
+#   `hubot take all sparkles from <username>` - removes all sparkles from <username>
 #
 # Author:
 #   admiralAwkbar
