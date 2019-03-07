@@ -15,7 +15,7 @@
 #   `hubot who has admin role` - Find out who's an admin and can assign roles
 #
 # Notes:
-#   * Call the method: robot.auth.hasRole('<user>','<role>')
+#   * Call the method: robot.Auth.hasRole('<user>','<role>')
 #   * returns bool true or false
 #
 #   * the 'admin' role can only be assigned through the environment variable
@@ -100,7 +100,7 @@ module.exports = (robot) ->
     unless name in ['', 'who', 'what', 'where', 'when', 'why']
       user = robot.brain.userForName(name)
       if !user?
-        msg.reply "#{name} does not exist"
+        msg.reply "@#{name} does not exist"
         return
 
       user.roles = user.roles or [ ]
@@ -109,7 +109,7 @@ module.exports = (robot) ->
       # Check if the role exists #
       ############################
       if newRole in user.roles
-        msg.reply "#{name} already has the '#{newRole}' role."
+        msg.reply "@#{name} already has the '#{newRole}' role."
       else
         if newRole == 'admin'
           msg.reply "Sorry, the 'admin' role can only be defined in the HUBOT_AUTH_ADMIN env variable."
@@ -117,8 +117,8 @@ module.exports = (robot) ->
           myRoles = msg.message.user.roles or [ ]
           if msg.message.user.name.toLowerCase() in admin.toLowerCase().split(',')
             user.roles.push(newRole)
-            msg.reply "Ok, #{name} has the '#{newRole}' role."
-                  
+            msg.reply "Ok, @#{name} has the '#{newRole}' role."
+
   #############################
   # Remove a user from a role #
   #############################
@@ -129,7 +129,7 @@ module.exports = (robot) ->
     unless name in ['', 'who', 'what', 'where', 'when', 'why']
       user = robot.brain.userForName(name)
       if !user?
-        msg.reply "#{name} does not exist"
+        msg.reply "@#{name} does not exist"
         return
 
       user.roles = user.roles or [ ]
@@ -139,7 +139,7 @@ module.exports = (robot) ->
         myRoles = msg.message.user.roles or [ ]
         if msg.message.user.name.toLowerCase() in admin.toLowerCase().split(',')
           user.roles = (role for role in user.roles when role isnt newRole)
-          msg.reply "Ok, #{name} doesn't have the '#{newRole}' role."
+          msg.reply "Ok, @#{name} doesn't have the '#{newRole}' role."
 
   #######################
   # Find roles per user #
@@ -149,19 +149,19 @@ module.exports = (robot) ->
 
     user = robot.brain.userForName(name)
     if !user?
-      msg.reply "#{name} does not exist"
+      msg.reply "@#{name} does not exist"
       return
 
     user.roles = user.roles or [ ]
 
     if name.toLowerCase() in admin.toLowerCase().split(',') then isAdmin = ' and is also an admin' else isAdmin = ''
-    msg.reply "#{name} has the following roles: " + user.roles + isAdmin + "."
+    msg.reply "@#{name} has the following roles: " + user.roles + isAdmin + "."
 
   ########################
   # List all admin users #
   ########################
   robot.respond /who has admin role\?*$/i, (msg) ->
-    msg.reply "The following people have the 'admin' role: #{admin.split(',')}"
+    msg.reply "The following people have the 'admin' role: @#{admins.join(', @')}"
 
 ###################
 ###################
