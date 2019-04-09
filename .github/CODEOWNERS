@@ -5,6 +5,9 @@
 # Single users #
 ################
 
+# Creator is in control
+*    @CREATOR
+
 # Admiral is always the boss
 *    @admiralawkbar
 
@@ -16,13 +19,13 @@
 #########
 
 # Robots to solve everything
-*    @demo/robots
+*    @demo-org/Autobots
 
 # Hardware team for the autmation
-Automation/*    @demo/hardware-experts
+Automation/*    @demo-org/sme-hardware-team
 
 # Node Experts for the codebase
-scripts/*    @demo/node-experts
+scripts/*    @demo-org/sme-node
 
 # Node experts to solve dependency issues
-package.json     @demo/node-experts
+package.json     @demo-org/sme-node
