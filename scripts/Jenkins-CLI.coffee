@@ -15,7 +15,6 @@
 #   `hubot jenkins build <job>, <params>` - builds the specified Jenkins job with parameters as key=value&key2=value2
 #   `hubot jenkins describe <job>` - Describes the specified Jenkins job
 #   `hubot jenkins last <job>` - Details about the last build for the specified Jenkins job
-#   `hubot jenkins job queue` - Returns the size of the jenkins queue
 #
 # Author:
 #   @admiralAwkbar
@@ -141,24 +140,5 @@ module.exports = (robot) ->
 
       response.trim()
       msg.send response
-  ############ END OF LOOP ###########################
-  ####################################################
-
-  ####################################################
-  # Jenkins Job Queue Loop ###########################
-  ####################################################
-  robot.respond /(?:jenkins)? job queue/i, (msg) ->
-    # instantiate child process to be able to create a subprocess
-    {spawn} = require 'child_process'
-    # create new subprocess and have it run the script
-    cmd = spawn 'scripts/utilities/perl/get_jenkins_job_queue.pl'
-    # catch stdout and output into hubot's log
-    cmd.stdout.on 'data', (data) ->
-      msg.send "```\n#{data.toString()}\n```"
-      console.log data.toString().trim()
-    # catch stderr and output into hubot's log
-    cmd.stderr.on 'data', (data) ->
-      console.log data.toString().trim()
-      msg.send "```\n#{data.toString()}\n```"
   ############ END OF LOOP ###########################
   ####################################################
