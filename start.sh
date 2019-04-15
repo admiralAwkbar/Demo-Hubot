@@ -127,17 +127,27 @@ ValidateHubotEnv()
   # Decrypt the hubot.env #
   #########################
   echo "Decrypting hubot.env for sourcing"
-  ansible-vault decrypt $HUBOT_HOME_DIR/hubot.env --vault-password-file=$PASSWD_FILE
+  DECRYPT_FILE_CMD=$(ansible-vault decrypt $HUBOT_HOME_DIR/hubot.env --vault-password-file=$PASSWD_FILE 2>&1)
 
   ##############################
   # Check the shell for errors #
   ##############################
   if [ $? -ne 0 ]; then
-    #####################
-    # Failed to decrypt #
-    #####################
-    echo "ERROR! Failed to decrypt:[$HUBOT_HOME_DIR/hubot.env]!"
-    exit 1
+    #################################
+    # Check if file was not secured #
+    #################################
+    if [[ "$DECRYPT_FILE_CMD" == *"input is not encrypted"* ]]; then
+      ###################################
+      # File was downloaded unencrypted #
+      ###################################
+      echo "File not encrypted at download..."
+    else
+      #####################
+      # Failed to decrypt #
+      #####################
+      echo "ERROR! Failed to decrypt:[$HUBOT_HOME_DIR/hubot.env]!"
+      exit 1
+    fi
   fi
 }
 ################################################################################
@@ -178,7 +188,9 @@ StartHubot()
   #########################
   # Start the application #
   #########################
-  nohup source $HUBOT_HOME_DIR/hubot.env ; ${HUBOT_BIN} --name ${HUBOT_NAME} --adapter ${ADAPTER} 2>&1 > ${HUBOT_LOGS_DIR}/${HUBOT_NAME}.log &
+  cd $HUBOT_HOME_DIR
+  source $HUBOT_HOME_DIR/hubot.env
+  nohup ${HUBOT_BIN} --name ${HUBOT_NAME} --adapter ${ADAPTER} 2>&1 > ${HUBOT_LOGS_DIR}/${HUBOT_NAME}.log &
 
   ##############################
   # Check the shell for errors #
